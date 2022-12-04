@@ -18,12 +18,14 @@ async function queryDayByDate(client: Client, date: moment.Moment) {
 
   if (results.results.length === 0) {
     day = await createDay(client, date);
+  } else {
+    day = results.results[0];
   }
 
   if (
     day.properties.Week.relation.length === 0
   ) {
-    day = await linkDayToWeek(client, date, day.id);
+    await linkDayToWeek(client, date, day.id);
   }
   return day;
 }
@@ -43,15 +45,18 @@ async function queryWeekByDate(client: Client, date: moment.Moment) {
   });
 
   console.assert(results.object == "list");
+  let week: any = undefined;
+
   if (results.results.length === 0) {
-    return await createWeek(client, date);
+    week = await createWeek(client, date);
+  } else {
+    week = results.results[0];
   }
 
-  let week: any = results.results[0];
   if (
     week.properties["Related to Months (Weeks)"].relation.length === 0
   ) {
-    week = await linkWeekToMonth(client, date, (week as any).id);
+    await linkWeekToMonth(client, date, (week as any).id);
   }
   return week;
 }
@@ -156,7 +161,7 @@ async function createMonth(client: Client, date: moment.Moment) {
   return results;
 }
 
-async function linkDayToWeek(
+export async function linkDayToWeek(
   client: Client,
   date: moment.Moment,
   dayId: string | undefined = undefined,
