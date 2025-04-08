@@ -1,16 +1,16 @@
 {
   "name": "notion-actions",
   "dependencies": {
-    "@notionhq/client": "^2.2.16",
-    "axios": "^1.7.9",
+    "@notionhq/client": "^2.3.0",
+    "axios": "^1.8.4",
     "commander": "^13.1.0",
     "dotenv": "^16.4.7",
     "moment": "^2.30.1"
   },
   "devDependencies": {
-    "@types/node": "^22.13.5",
-    "prettier": "^3.5.2",
-    "typescript": "^5.7.3"
+    "@types/node": "^22.14.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "start": "bun run ./src/main.ts"

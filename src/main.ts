@@ -13,7 +13,7 @@ const notion = new Client({
 });
 
 (async () => {
-    for (let i = 7; i >= 0; i--) {
+    for (let i = 1; i >= 0; i--) {
         const date = moment().subtract(i, "days");
         await linkDayToWeek(notion, date);
     }

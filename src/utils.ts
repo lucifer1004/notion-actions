@@ -1,4 +1,4 @@
-import { Client } from "@notionhq/client";
+import type { Client } from "@notionhq/client";
 
 export async function queryDatabaseIdByName(client: Client, name: string) {
     const results = (await client.search({
