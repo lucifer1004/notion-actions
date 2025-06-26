@@ -9,14 +9,14 @@ dotenv.config();
 
 // Initializing a client
 const notion = new Client({
-    auth: process.env.NOTION_TOKEN,
+  auth: process.env.NOTION_TOKEN,
 });
 
 (async () => {
-    for (let i = 1; i >= 0; i--) {
-        const date = moment().subtract(i, "days");
-        await linkDayToWeek(notion, date);
-    }
+  for (let i = 1; i >= 0; i--) {
+    const date = moment().subtract(i, "days");
+    await linkDayToWeek(notion, date);
+  }
 })();
 
 // (async () => {

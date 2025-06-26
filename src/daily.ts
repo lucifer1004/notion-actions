@@ -25,7 +25,8 @@ async function queryDayByDate(
   });
 
   console.assert(results.object === "list");
-  let day: PageObjectResponse | PartialPageObjectResponse | undefined = undefined;
+  let day: PageObjectResponse | PartialPageObjectResponse | undefined =
+    undefined;
 
   if (results.results.length === 0) {
     day = await createDay(client, date);
@@ -34,7 +35,9 @@ async function queryDayByDate(
   }
 
   if (!day) {
-    throw new Error(`Could not find or create day for date ${date.format("YYYY-MM-DD")}`);
+    throw new Error(
+      `Could not find or create day for date ${date.format("YYYY-MM-DD")}`,
+    );
   }
   return day;
 }
@@ -71,7 +74,9 @@ async function queryWeekByDate(
   }
 
   if (!week) {
-    throw new Error(`Could not find or create week for date ${date.format("YYYY-MM-DD")}`);
+    throw new Error(
+      `Could not find or create week for date ${date.format("YYYY-MM-DD")}`,
+    );
   }
 
   if (
@@ -109,9 +114,13 @@ async function queryMonthByDate(
     return await createMonth(client, date);
   }
 
-  const month = results.results[0] as PageObjectResponse | PartialPageObjectResponse;
+  const month = results.results[0] as
+    | PageObjectResponse
+    | PartialPageObjectResponse;
   if (!month) {
-    throw new Error(`Could not find or create month for date ${date.format("YYYY-MM-DD")}`);
+    throw new Error(
+      `Could not find or create month for date ${date.format("YYYY-MM-DD")}`,
+    );
   }
   return month;
 }
@@ -133,11 +142,13 @@ async function createDay(
     },
     properties: {
       Name: {
-        title: [{
-          text: {
-            content: dateString,
+        title: [
+          {
+            text: {
+              content: dateString,
+            },
           },
-        }],
+        ],
       },
       Date: {
         date: {
@@ -169,11 +180,13 @@ async function createWeek(
     },
     properties: {
       Name: {
-        title: [{
-          text: {
-            content: weekName,
+        title: [
+          {
+            text: {
+              content: weekName,
+            },
           },
-        }],
+        ],
       },
       "Time span": {
         date: {
@@ -204,11 +217,13 @@ async function createMonth(
     },
     properties: {
       Name: {
-        title: [{
-          text: {
-            content: monthName,
+        title: [
+          {
+            text: {
+              content: monthName,
+            },
           },
-        }],
+        ],
       },
     },
   });
