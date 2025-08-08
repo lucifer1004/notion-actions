@@ -13,10 +13,13 @@ const notion = new Client({
 });
 
 (async () => {
-  for (let i = 1; i >= 0; i--) {
-    const date = moment().subtract(i, "days");
-    await linkDayToWeek(notion, date);
-  }
+    if (!process.env.NOTION_TOKEN) {
+        throw new Error("NOTION_TOKEN environment variable is not set.");
+    }
+    for (let i = 1; i >= 0; i--) {
+        const date = moment().subtract(i, "days");
+        await linkDayToWeek(notion, date);
+    }
 })();
 
 // (async () => {

@@ -46,8 +46,8 @@ async function queryWeekByDate(
   client: Client,
   date: moment.Moment,
 ): Promise<PageObjectResponse | PartialPageObjectResponse> {
-  const startOfWeekString = date.startOf("isoWeek").format("MMM D, YYYY");
-  const endOfWeekString = date.endOf("isoWeek").format("MMM D, YYYY");
+  const startOfWeekString = date.clone().startOf("isoWeek").format("MMM D, YYYY");
+  const endOfWeekString = date.clone().endOf("isoWeek").format("MMM D, YYYY");
   const weekName = `${startOfWeekString} — ${endOfWeekString}`;
   const databaseId = process.env.WEEKS_DB_ID;
   if (!databaseId) {
@@ -94,7 +94,7 @@ async function queryMonthByDate(
   client: Client,
   date: moment.Moment,
 ): Promise<PageObjectResponse | PartialPageObjectResponse> {
-  const monthName = date.startOf("month").format("MMM YYYY");
+  const monthName = date.clone().startOf("month").format("MMM YYYY");
   const databaseId = process.env.MONTHS_DB_ID;
   if (!databaseId) {
     throw new Error("MONTHS_DB_ID environment variable is not set.");
@@ -165,9 +165,9 @@ async function createWeek(
   client: Client,
   date: moment.Moment,
 ): Promise<PageObjectResponse | PartialPageObjectResponse> {
-  const startOfWeekString = date.startOf("isoWeek").format("MMM D, YYYY");
-  const endOfWeekString = date.endOf("isoWeek").format("MMM D, YYYY");
-  const weekName = `${startOfWeekString} — ${endOfWeekString}`;
+  const startOfWeek = date.clone().startOf("isoWeek");
+  const endOfWeek = date.clone().endOf("isoWeek");
+  const weekName = `${startOfWeek.format("MMM D, YYYY")} — ${endOfWeek.format("MMM D, YYYY")}`;
   const databaseId = process.env.WEEKS_DB_ID;
   if (!databaseId) {
     throw new Error("WEEKS_DB_ID environment variable is not set.");
@@ -190,8 +190,8 @@ async function createWeek(
       },
       "Time span": {
         date: {
-          start: date.startOf("isoWeek").format("YYYY-MM-DD"),
-          end: date.endOf("isoWeek").format("YYYY-MM-DD"),
+          start: startOfWeek.format("YYYY-MM-DD"),
+          end: endOfWeek.format("YYYY-MM-DD"),
         },
       },
     },
@@ -204,7 +204,7 @@ async function createMonth(
   client: Client,
   date: moment.Moment,
 ): Promise<PageObjectResponse | PartialPageObjectResponse> {
-  const monthName = date.startOf("month").format("MMM YYYY");
+  const monthName = date.clone().startOf("month").format("MMM YYYY");
   const databaseId = process.env.MONTHS_DB_ID;
   if (!databaseId) {
     throw new Error("MONTHS_DB_ID environment variable is not set.");
@@ -290,9 +290,9 @@ async function linkWeekToMonth(
   weekId: string | undefined = undefined,
   monthIds: string[] | undefined = undefined,
 ) {
-  const startOfWeek = date.startOf("isoWeek");
+  const startOfWeek = date.clone().startOf("isoWeek");
   const startOfWeekString = startOfWeek.format("MMM D, YYYY");
-  const endOfWeek = date.endOf("isoWeek");
+  const endOfWeek = date.clone().endOf("isoWeek");
   const endOfWeekString = endOfWeek.format("MMM D, YYYY");
   const weekName = `${startOfWeekString} — ${endOfWeekString}`;
   console.info(`Linking week ${weekName} to month`);
@@ -305,9 +305,9 @@ async function linkWeekToMonth(
     targetWeekId = week.id;
     if (
       "properties" in week &&
-      "Month" in week.properties &&
-      week.properties.Month.type === "relation" &&
-      week.properties.Month.relation.length > 0
+      "Related to Months (Weeks)" in week.properties &&
+      week.properties["Related to Months (Weeks)"].type === "relation" &&
+      week.properties["Related to Months (Weeks)"].relation.length > 0
     ) {
       console.info("Already linked!");
       return;
